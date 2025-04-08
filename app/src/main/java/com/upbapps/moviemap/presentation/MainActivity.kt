@@ -1,4 +1,4 @@
-package com.upbapps.moviemap
+package com.upbapps.moviemap.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
