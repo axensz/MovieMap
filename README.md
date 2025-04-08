@@ -17,7 +17,7 @@
 ## Diseño UX/UI
 El diseño fue prototipado en Figma, utilizando principios de diseño centrado en el usuario.  
 Enlace al diseño:  
-[https://www.figma.com/design/6cEdOZnBvjNYNDuTj5Ft8r/MovieMap](https://www.figma.com/design/6cEdOZnBvjNYNDuTj5Ft8r/MovieMap)
+[Figma](https://www.figma.com/design/6cEdOZnBvjNYNDuTj5Ft8r/MovieMap)
 
 ---
 
