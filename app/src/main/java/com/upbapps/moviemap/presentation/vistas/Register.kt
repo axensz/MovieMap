@@ -2,11 +2,14 @@ package com.upbapps.moviemap.presentation.vistas
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,10 +23,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun Login (navController: NavHostController){
+fun Register (navController: NavHostController){
     var correo by remember { mutableStateOf("") }
     var contraseña by remember { mutableStateOf("") }
-
+    var RepiteContraseña by remember {mutableStateOf("")}
+    Row (
+        modifier = Modifier.fillMaxSize()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.Start
+    ){
+        //Spacer(modifier = Modifier.height(80.dp))
+        IconButton(
+            onClick = {navController.popBackStack()}
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Volver"
+            )
+        }
+    }
     Column (
         modifier = Modifier.fillMaxSize()
             .padding(16.dp),
@@ -50,26 +68,19 @@ fun Login (navController: NavHostController){
             label = {Text(text = "Contraseña")},
             shape = RoundedCornerShape(16.dp)
         )
-        TextButton(
-            onClick = {},
-            colors = ButtonDefaults.textButtonColors(contentColor = Color.DarkGray)
-        ) {
-            Text(text="¿Olvidaste tu contraseña?")
-        }
+        OutlinedTextField(
+            value = RepiteContraseña,
+            onValueChange = {RepiteContraseña = it},
+            label = {Text(text = "Repetir Contraseña")},
+            shape = RoundedCornerShape(16.dp)
+        )
         Spacer(modifier = Modifier.height(40.dp))
         Button(
             onClick = {navController.navigate("home")},
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
-            Text(text = "Iniciar Sesión")
-        }
-        Button(
-            onClick = {navController.navigate("register")},
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
-        ) {
-            Text(text = "Crea tu cuenta")
+            Text(text = "Crear cuenta")
         }
     }
 }

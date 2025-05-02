@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.upbapps.moviemap.presentation.vistas.Home
 import com.upbapps.moviemap.presentation.vistas.Login
+import com.upbapps.moviemap.presentation.vistas.Register
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +32,7 @@ fun Navigation(){
     NavHost(navController = navController, startDestination = "login"){
         composable("login") { Login(navController) }
         composable("home") { Home(navController) }
+        composable("register") {Register(navController)}
     }
 }
 
