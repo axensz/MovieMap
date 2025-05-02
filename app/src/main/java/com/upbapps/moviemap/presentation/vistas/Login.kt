@@ -58,7 +58,7 @@ fun Login (navController: NavHostController){
         }
         Spacer(modifier = Modifier.height(40.dp))
         Button(
-            onClick = {},
+            onClick = {navController.navigate("home")},
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
         ) {
