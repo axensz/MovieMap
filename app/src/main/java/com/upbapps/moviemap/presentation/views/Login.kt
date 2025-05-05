@@ -1,4 +1,4 @@
-package com.upbapps.moviemap.presentation.vistas
+package com.upbapps.moviemap.presentation.views
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

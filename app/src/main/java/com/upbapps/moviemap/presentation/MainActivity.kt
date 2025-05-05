@@ -10,9 +10,9 @@ import androidx.navigation.compose.NavHost
 import com.upbapps.moviemap.ui.theme.MovieMapTheme
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.upbapps.moviemap.presentation.vistas.Home
-import com.upbapps.moviemap.presentation.vistas.Login
-import com.upbapps.moviemap.presentation.vistas.Register
+import com.upbapps.moviemap.presentation.views.Home
+import com.upbapps.moviemap.presentation.views.Login
+import com.upbapps.moviemap.presentation.views.Register
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +31,8 @@ fun Navigation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "login"){
         composable("login") { Login(navController) }
-        composable("home") { Home(navController) }
         composable("register") {Register(navController)}
+        composable("home") { Home(navController) }
     }
 }
 
