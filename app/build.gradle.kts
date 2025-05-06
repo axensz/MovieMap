@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
+
 
 android {
     namespace = "com.upbapps.moviemap"
@@ -60,25 +62,32 @@ dependencies {
     // Debug y Preview
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
     // UI Tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
-
     // Otros opcionales
     implementation(libs.androidx.material.icons.extended)
-
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
     //Para la navegación
-    implementation("androidx.navigation:navigation-compose:2.8.9")
-
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation(libs.androidx.navigation.compose)
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    //noinspection UseTomlInstead
     implementation("com.google.code.gson:gson:2.10.1")
-
     // Coil para Jetpack Compose (AsyncImage)
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    //noinspection UseTomlInstead
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
+    //Firebase
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
 }
