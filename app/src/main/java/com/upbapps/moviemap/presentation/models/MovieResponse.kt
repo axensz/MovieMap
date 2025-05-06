@@ -1,3 +1,3 @@
 package com.upbapps.moviemap.presentation.models
 
-data class MovieResponse(val movies: List<Movie>)
+data class MovieResponse(val page: Int,val results: List<Movie>)

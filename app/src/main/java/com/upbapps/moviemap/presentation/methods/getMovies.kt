@@ -27,9 +27,8 @@ fun getMovies(onResult: (List<Movie>) -> Unit){
             response.body?.string().let {json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.movies ?: emptyList())
+                onResult(movieResponse.results ?: emptyList())
             }
         }
     })
-
 }
