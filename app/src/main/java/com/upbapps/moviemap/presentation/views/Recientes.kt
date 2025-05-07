@@ -64,7 +64,7 @@ fun Recientes(navController: NavController){
                         columns = GridCells.Fixed(2)
                     ) {
                         items(peliculas) { movie ->
-                            MovieSerieItem(movie)
+                            MovieSerieItem(navController,movie)
                         }
                     }
                 }

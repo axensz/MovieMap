@@ -15,7 +15,7 @@ fun getMovies(onResult: (List<Movie>) -> Unit){
     val client = OkHttpClient()
 
     val request = Request.Builder()
-        .url("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc")
+        .url("https://api.themoviedb.org/3/discover/movie?language=es-ES&include_adult=false&include_video=false&page=1&sort_by=popularity.desc")
         .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MmQzZTlmZTM2MGYxZDdjZmQxNDMwNjljYjgyZmI5MiIsIm5iZiI6MTc0NjQwODEyOC45NDQsInN1YiI6IjY4MTgxMmMwYWVmMmU1M2M2ZWQ0Y2I5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.doIdIc-Dk95w2SLqLsiR-FSZRrkzdbBg9PajkEN-fVM")
         .build()
 

@@ -54,7 +54,7 @@ fun Home(navController: NavHostController) {
                         columns = GridCells.Fixed(2)
                     ) {
                         items(peliculas) { movie ->
-                            MovieSerieItem(movie)
+                            MovieSerieItem(navController, movie)
                         }
                     }
                 }

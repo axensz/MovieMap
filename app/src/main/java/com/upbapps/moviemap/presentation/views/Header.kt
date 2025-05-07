@@ -28,7 +28,9 @@ fun Header(navController: NavController){
             fontWeight = FontWeight.Bold
         )
         IconButton(
-            onClick = {navController.navigate("user")}
+            onClick = {navController.navigate("user"){
+                launchSingleTop = true
+            } }
         ) {
             Icon(
                 imageVector = Icons.Default.Person,

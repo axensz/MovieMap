@@ -1,5 +1,7 @@
 package com.upbapps.moviemap.presentation.views
 
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,17 +17,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.models.Movie
+import com.google.gson.Gson
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 @Composable
-fun MovieSerieItem(movie: Movie) {
+fun MovieSerieItem(navController: NavController, movie: Movie) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        onClick = {}
+        modifier = Modifier.clickable(onClick = {
+            val movieJSON = Uri.encode(Gson().toJson(movie))
+            navController.navigate("details/$movieJSON")
+        })
     ) {
         Column (
             modifier = Modifier.padding(8.dp),
