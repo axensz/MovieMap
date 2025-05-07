@@ -2,6 +2,9 @@ package com.upbapps.moviemap.presentation.views
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -45,8 +48,9 @@ fun Home(navController: NavHostController) {
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
             else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight().weight(1f)
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    columns = GridCells.Fixed(2)
                 ) {
                     items(peliculas) { movie ->
                         MovieSerieItem(movie)

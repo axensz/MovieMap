@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.upbapps.moviemap.presentation.methods.getRecentMovies
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.views.MovieSerieItem
+import androidx.compose.foundation.lazy.grid.items
 
 @Composable
 fun Recientes(navController: NavController){
@@ -56,8 +57,9 @@ fun Recientes(navController: NavController){
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
             else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxHeight().weight(1f)
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    columns = GridCells.Fixed(2)
                 ) {
                     items(peliculas) { movie ->
                         MovieSerieItem(movie)
