@@ -3,7 +3,6 @@ package com.upbapps.moviemap.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -25,7 +24,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun Navigation(){
     val navController = rememberNavController()
@@ -43,6 +41,7 @@ fun Navigation(){
             composable(BottomNavItem.Recientes.route) { Recientes(navController) }
             composable(BottomNavItem.Populares.route) { Populares(navController) }
             composable(BottomNavItem.Listas.route) { Listas(navController) }
+            composable("details"){Details(navController)}
         }
     }
 }
