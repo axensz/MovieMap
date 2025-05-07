@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.upbapps.moviemap" />
+                  <option name="mobileSdkAppId" value="1:757809722220:android:c8204d9e7d94f1256fb949" />
+                  <option name="projectId" value="moviemap-cf783" />
+                  <option name="projectNumber" value="757809722220" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

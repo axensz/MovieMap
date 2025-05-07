@@ -12,27 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 
-// 1. Pantallas (vistas)
-@Composable
-fun HomeScreen() {
-    Text("Inicio")
-}
-
-@Composable
-fun RecientesScreen() {
-    Text("Recientes")
-}
-
-@Composable
-fun PopularesScreen() {
-    Text("Populares")
-}
-
-@Composable
-fun ListasScreen() {
-    Text("Listas")
-}
-
 // 2. Ítems de la barra de navegación
 sealed class BottomNavItem(
     val route: String,

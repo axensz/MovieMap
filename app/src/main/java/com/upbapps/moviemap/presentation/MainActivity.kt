@@ -20,21 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
-            Scaffold(
-                bottomBar = { BottomBar(navController) }
-            ) { padding ->
-                NavHost(
-                    navController = navController,
-                    startDestination = BottomNavItem.Home.route,
-                    modifier = Modifier.padding(padding)
-                ) {
-                    composable(BottomNavItem.Home.route) { HomeScreen() }
-                    composable(BottomNavItem.Recientes.route) { RecientesScreen() }
-                    composable(BottomNavItem.Populares.route) { PopularesScreen() }
-                    composable(BottomNavItem.Listas.route) { ListasScreen() }
-                }
-            }
+            Navigation()
         }
     }
 }
@@ -43,10 +29,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation(){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home"){
-        composable("login") { Login(navController) }
-        composable("register") {Register(navController)}
-        composable("home") { Home(navController) }
+    Scaffold(
+        bottomBar = { BottomBar(navController) }
+    ) { padding ->
+        NavHost(
+            navController = navController,
+            startDestination = BottomNavItem.Home.route,
+            modifier = Modifier.padding(padding)
+        ) {
+            composable("login") {Login(navController)}
+            composable("registro") {Register(navController)}
+            composable(BottomNavItem.Home.route) { Home(navController) }
+            composable(BottomNavItem.Recientes.route) { Recientes(navController) }
+            composable(BottomNavItem.Populares.route) { Populares(navController) }
+            composable(BottomNavItem.Listas.route) { Listas(navController) }
+        }
     }
 }
 
