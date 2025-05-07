@@ -41,7 +41,7 @@ fun Navigation(){
             composable(BottomNavItem.Recientes.route) { Recientes(navController) }
             composable(BottomNavItem.Populares.route) { Populares(navController) }
             composable(BottomNavItem.Listas.route) { Listas(navController) }
-            composable("details"){Details(navController)}
+            composable("user"){User(navController)}
         }
     }
 }

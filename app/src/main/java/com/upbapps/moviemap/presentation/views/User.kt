@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun Populares(navController: NavController){
+fun User(navController: NavController){
     Column {
         Header(navController)
         Column(
@@ -23,7 +23,7 @@ fun Populares(navController: NavController){
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Populares", style = MaterialTheme.typography.headlineSmall)
+            Text("User", style = MaterialTheme.typography.headlineSmall)
         }
     }
 }

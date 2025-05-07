@@ -24,7 +24,8 @@ fun MovieSerieItem(movie: Movie) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        onClick = {}
     ) {
         Column (
             modifier = Modifier.padding(8.dp),

@@ -14,13 +14,16 @@ import androidx.navigation.NavController
 
 @Composable
 fun Details(navController: NavController){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Detalle", style = MaterialTheme.typography.headlineSmall)
+    Column {
+        Header(navController)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Listas", style = MaterialTheme.typography.headlineSmall)
+        }
     }
 }

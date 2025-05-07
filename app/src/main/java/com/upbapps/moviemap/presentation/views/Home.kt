@@ -28,32 +28,34 @@ fun Home(navController: NavHostController) {
             loading = false
         }
     }
+    Column {
+        Header(navController)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Inicio", style = MaterialTheme.typography.headlineSmall)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Películas Populares", style = MaterialTheme.typography.headlineSmall)
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        when {
-            loading -> {
-                CircularProgressIndicator()
-            }
-            error != null -> {
-                Text("Error: $error", color = MaterialTheme.colorScheme.error)
-            }
-            else -> {
-                LazyVerticalGrid(
-                    modifier = Modifier.fillMaxHeight().weight(1f),
-                    columns = GridCells.Fixed(2)
-                ) {
-                    items(peliculas) { movie ->
-                        MovieSerieItem(movie)
+            when {
+                loading -> {
+                    CircularProgressIndicator()
+                }
+                error != null -> {
+                    Text("Error: $error", color = MaterialTheme.colorScheme.error)
+                }
+                else -> {
+                    LazyVerticalGrid(
+                        modifier = Modifier.fillMaxHeight().weight(1f),
+                        columns = GridCells.Fixed(2)
+                    ) {
+                        items(peliculas) { movie ->
+                            MovieSerieItem(movie)
+                        }
                     }
                 }
             }
