@@ -31,8 +31,7 @@ fun DetailsSerie(navController: NavController, serie: Serie){
         AsyncImage(
             model = IMAGE_BASE_URL + serie.backdropPath,
             contentDescription = serie.name,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
         Column(
             modifier = Modifier
@@ -41,20 +40,34 @@ fun DetailsSerie(navController: NavController, serie: Serie){
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column{
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(serie.name, style = MaterialTheme.typography.titleMedium)
+
                 LazyRow {
                     items(genres_names) { genre ->
-                        genreView(genre)
+                        genreSerieView(genre)
                         Spacer(modifier = Modifier.width(4.dp))
                     }
                 }
+
                 Text(serie.overview, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
                 Text(serie.first_air_date, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
+
+                // Botón para agregar serie a listas
+                androidx.compose.material3.Button(
+                    onClick = {
+                        println("Serie agregada a la lista: ${serie.name}")
+                        // TODO: función para guardar serie en listas
+                    },
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text("Agregar a Listas")
+                }
             }
         }
     }
 }
+
 
 @Composable
 fun genreSerieView(genre: String){

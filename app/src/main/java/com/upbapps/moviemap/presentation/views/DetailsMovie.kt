@@ -1,17 +1,10 @@
 package com.upbapps.moviemap.presentation.views
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,21 +12,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.models.Movie
-import androidx.compose.foundation.lazy.items
+import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
 @Composable
-fun DetailsMovie(navController: NavController, movie: Movie){
+fun DetailsMovie(
+    navController: NavController,
+    movie: Movie,
+    movieViewModel: MovieViewModel
+) {
     val genres_names = movie.list_genres.mapNotNull { genresMap[it] }
+
     Column {
         Header(navController)
+
         AsyncImage(
             model = IMAGE_BASE_URL + movie.backdropPath,
             contentDescription = movie.title,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -41,29 +40,49 @@ fun DetailsMovie(navController: NavController, movie: Movie){
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column{
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(movie.title, style = MaterialTheme.typography.titleMedium)
+
                 LazyRow {
                     items(genres_names) { genre ->
                         genreView(genre)
                         Spacer(modifier = Modifier.width(4.dp))
                     }
                 }
-                Text(movie.overview, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
-                Text(movie.releaseDate, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
+
+                Text(
+                    movie.overview,
+                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    movie.releaseDate,
+                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                // ✅ Botón para agregar a Listas
+                Button(
+                    onClick = {
+                        movieViewModel.addToList(movie)
+                        println("Película agregada a la lista: ${movie.title}")
+                    },
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text("Agregar a Listas")
+                }
             }
         }
     }
 }
 
 @Composable
-fun genreView(genre: String){
-
+fun genreView(genre: String) {
     Surface(
         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .padding(vertical = 4.dp)
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Text(
             text = genre,

@@ -1,11 +1,9 @@
 package com.upbapps.moviemap.presentation.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,9 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.upbapps.moviemap.presentation.methods.getMovies
 import com.upbapps.moviemap.presentation.models.Movie
+import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
 
 @Composable
-fun Home(navController: NavHostController) {
+fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
     var peliculas by remember { mutableStateOf<List<Movie>>(emptyList()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -28,6 +27,7 @@ fun Home(navController: NavHostController) {
             loading = false
         }
     }
+
     Column {
         Header(navController)
         Column(
@@ -38,7 +38,6 @@ fun Home(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Inicio", style = MaterialTheme.typography.headlineSmall)
-
             Spacer(modifier = Modifier.height(16.dp))
 
             when {
@@ -50,11 +49,13 @@ fun Home(navController: NavHostController) {
                 }
                 else -> {
                     LazyVerticalGrid(
-                        modifier = Modifier.fillMaxHeight().weight(1f),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
                         columns = GridCells.Fixed(2)
                     ) {
                         items(peliculas) { movie ->
-                            MovieItem(navController, movie)
+                            MovieItem(navController, movie) // movieViewModel no es necesario aquí aún
                         }
                     }
                 }
