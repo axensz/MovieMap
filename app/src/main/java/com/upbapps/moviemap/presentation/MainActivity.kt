@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.upbapps.moviemap.presentation.models.Movie
+import com.upbapps.moviemap.presentation.models.Serie
 import com.upbapps.moviemap.presentation.views.*
 import com.upbapps.moviemap.ui.theme.MovieMapTheme
 
@@ -51,12 +52,20 @@ fun Navigation(){
             composable("registro") {Register(navController)}
             composable("user"){User(navController)}
             composable(
-                route="details/{movie}",
+                route="details_movie/{movie}",
                 arguments = listOf(navArgument("movie") { type = NavType.StringType })
             ){ backStackEntry ->
                 val movieJSON = backStackEntry.arguments?.getString("movie")
                 val movie = Gson().fromJson(movieJSON, Movie::class.java)
-                Details(navController, movie)
+                DetailsMovie(navController, movie)
+            }
+            composable(
+                route="details_serie/{serie}",
+                arguments = listOf(navArgument("serie") { type = NavType.StringType })
+            ){ backStackEntry ->
+                val serieJSON = backStackEntry.arguments?.getString("serie")
+                val serie = Gson().fromJson(serieJSON, Serie::class.java)
+                DetailsSerie(navController, serie)
             }
         }
     }

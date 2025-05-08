@@ -24,14 +24,14 @@ import com.google.gson.Gson
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 @Composable
-fun MovieSerieItem(navController: NavController, movie: Movie) {
+fun MovieItem(navController: NavController, movie: Movie) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier.clickable(onClick = {
             val movieJSON = Uri.encode(Gson().toJson(movie))
-            navController.navigate("details/$movieJSON")
+            navController.navigate("details_movie/$movieJSON")
         })
     ) {
         Column (
