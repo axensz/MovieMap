@@ -12,11 +12,11 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-fun getRecentMovies(onResult: (List<Movie>) -> Unit){
+fun getRecentSeries(onResult: (List<Movie>) -> Unit){
     val client = OkHttpClient()
 
     val request = Request.Builder()
-        .url("https://api.themoviedb.org/3/movie/now_playing?language=es-ES&page=1")
+        .url("https://api.themoviedb.org/3/tv/on_the_air?&language=es-ES&page=1")
         .addHeader("Authorization", "Bearer "+ tk)
         .build()
 

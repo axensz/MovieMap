@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.models.MovieResponse
+import com.upbapps.moviemap.ui.theme.tk
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -16,7 +17,7 @@ fun getMovies(onResult: (List<Movie>) -> Unit){
 
     val request = Request.Builder()
         .url("https://api.themoviedb.org/3/discover/movie?language=es-ES&include_adult=false&include_video=false&page=1&sort_by=popularity.desc")
-        .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MmQzZTlmZTM2MGYxZDdjZmQxNDMwNjljYjgyZmI5MiIsIm5iZiI6MTc0NjQwODEyOC45NDQsInN1YiI6IjY4MTgxMmMwYWVmMmU1M2M2ZWQ0Y2I5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.doIdIc-Dk95w2SLqLsiR-FSZRrkzdbBg9PajkEN-fVM")
+        .addHeader("Authorization", "Bearer "+ tk)
         .build()
 
     client.newCall(request).enqueue(object : Callback {
