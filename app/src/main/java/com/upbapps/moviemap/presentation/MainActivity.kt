@@ -13,6 +13,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.google.gson.Gson
+import com.upbapps.moviemap.presentation.components.BottomBar
+import com.upbapps.moviemap.presentation.components.BottomNavItem
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.models.Serie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
@@ -39,8 +41,8 @@ fun Navigation(movieViewModel: MovieViewModel) {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = BottomNavItem.Home.route,
-            modifier = Modifier.padding(padding)
+            startDestination = "login"//BottomNavItem.Home.route
+            ,modifier = Modifier.padding(padding)
         ) {
             composable(BottomNavItem.Home.route) {
                 Home(navController, movieViewModel)

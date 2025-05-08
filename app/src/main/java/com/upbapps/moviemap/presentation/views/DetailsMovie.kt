@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -19,6 +18,7 @@ import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
 import androidx.compose.ui.graphics.Color
+import com.upbapps.moviemap.presentation.components.Header
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 

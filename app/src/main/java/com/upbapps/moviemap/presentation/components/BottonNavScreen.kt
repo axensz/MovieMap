@@ -1,4 +1,4 @@
-package com.upbapps.moviemap.presentation.views
+package com.upbapps.moviemap.presentation.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavGraph.Companion.findStartDestination
 
 // 2. Ítems de la barra de navegación
 sealed class BottomNavItem(

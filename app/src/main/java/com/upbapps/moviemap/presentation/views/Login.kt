@@ -1,11 +1,13 @@
 package com.upbapps.moviemap.presentation.views
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,7 +19,10 @@ import androidx.navigation.NavHostController
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import com.upbapps.moviemap.R
 
 @Composable
 fun Login (navController: NavHostController){
@@ -30,12 +35,17 @@ fun Login (navController: NavHostController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo",
+            modifier = Modifier.width(200.dp),
+            contentScale = ContentScale.Crop
+        )
         Text(
             text = "MovieApp",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
-        Text(text = "Logo")
         Text(text = "Tu próxima maratón empieza aquí", style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.height(100.dp))
         OutlinedTextField(

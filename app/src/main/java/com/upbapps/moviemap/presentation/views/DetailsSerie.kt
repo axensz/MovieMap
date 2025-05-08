@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.upbapps.moviemap.presentation.components.Header
 import com.upbapps.moviemap.presentation.models.Serie
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"

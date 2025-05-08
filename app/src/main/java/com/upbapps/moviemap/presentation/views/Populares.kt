@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.upbapps.moviemap.presentation.components.Header
+import com.upbapps.moviemap.presentation.components.MovieItem
+import com.upbapps.moviemap.presentation.components.SerieItem
 import com.upbapps.moviemap.presentation.methods.getPopularMovies
 import com.upbapps.moviemap.presentation.methods.getPopularSeries
 import com.upbapps.moviemap.presentation.models.Movie

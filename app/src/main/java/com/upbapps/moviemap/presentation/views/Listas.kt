@@ -1,6 +1,5 @@
 package com.upbapps.moviemap.presentation.views
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.gson.Gson
+import com.upbapps.moviemap.presentation.components.Header
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
 
@@ -22,24 +22,26 @@ private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 @Composable
 fun Listas(navController: NavController, movieViewModel: MovieViewModel) {
     val favoriteMovies = movieViewModel.favoriteMovies
+    Column{
+        Header(navController)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Text("Películas Guardadas", style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(8.dp))
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text("Películas Guardadas", style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(8.dp))
-
-        if (favoriteMovies.isEmpty()) {
-            Text("No has agregado películas aún.")
-        } else {
-            LazyColumn {
-                items(favoriteMovies) { movie ->
-                    MovieListItem(movie = movie) {
-                        // Al hacer clic, navegamos a detalles
-                        val movieJson = Gson().toJson(movie)
-                        navController.navigate("details_movie/${movieJson}")
+            if (favoriteMovies.isEmpty()) {
+                Text("No has agregado películas aún.")
+            } else {
+                LazyColumn {
+                    items(favoriteMovies) { movie ->
+                        MovieListItem(movie = movie) {
+                            // Al hacer clic, navegamos a detalles
+                            val movieJson = Gson().toJson(movie)
+                            navController.navigate("details_movie/${movieJson}")
+                        }
                     }
                 }
             }

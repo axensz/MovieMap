@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.upbapps.moviemap.presentation.components.Header
+import com.upbapps.moviemap.presentation.components.MovieItem
 import com.upbapps.moviemap.presentation.methods.getMovies
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
@@ -55,7 +57,10 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
                         columns = GridCells.Fixed(2)
                     ) {
                         items(peliculas) { movie ->
-                            MovieItem(navController, movie) // movieViewModel no es necesario aquí aún
+                            MovieItem(
+                                navController,
+                                movie
+                            ) // movieViewModel no es necesario aquí aún
                         }
                     }
                 }
