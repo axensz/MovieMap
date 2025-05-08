@@ -1,9 +1,14 @@
 package com.upbapps.moviemap.presentation.views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +18,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
+import androidx.compose.ui.graphics.Color
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -26,12 +32,30 @@ fun DetailsMovie(
 
     Column {
         Header(navController)
-
-        AsyncImage(
-            model = IMAGE_BASE_URL + movie.backdropPath,
-            contentDescription = movie.title,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Box(){
+            AsyncImage(
+                model = IMAGE_BASE_URL + movie.backdropPath,
+                contentDescription = movie.title,
+                modifier = Modifier.fillMaxWidth()
+            )
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(36.dp)
+                    .background(
+                        color = Color.Black.copy(alpha = 0.5f),
+                        shape = CircleShape
+                    )
+                    .align(Alignment.TopStart)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.White
+                )
+            }
+        }
 
         Column(
             modifier = Modifier

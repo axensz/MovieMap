@@ -28,7 +28,7 @@ fun MovieItem(navController: NavController, movie: Movie) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.Black),
         modifier = Modifier.clickable(onClick = {
             val movieJSON = Uri.encode(Gson().toJson(movie))
             navController.navigate("details_movie/$movieJSON")

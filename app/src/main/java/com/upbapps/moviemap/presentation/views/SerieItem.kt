@@ -29,7 +29,7 @@ fun SerieItem(navController: NavController, serie: Serie) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.Black),
         modifier = Modifier.clickable(onClick = {
             val serieJSON = Uri.encode(Gson().toJson(serie))
             navController.navigate("details_serie/$serieJSON")
