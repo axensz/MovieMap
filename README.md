@@ -38,7 +38,6 @@ El proyecto sigue una arquitectura limpia (Clean Architecture) con una clara sep
 
 ### Patrones de Diseño
 - MVVM (Model-View-ViewModel)
-- Repository Pattern
 - Clean Architecture
 
 ### Dependencias Principales
@@ -52,12 +51,6 @@ El proyecto sigue una arquitectura limpia (Clean Architecture) con una clara sep
   - Firebase:
     - Authentication
     - Firestore
-    - Storage
-    - Analytics
-
-- **Networking**:
-  - OkHttp
-  - Gson
 
 ### Configuración Técnica
 - SDK mínimo: 24 (Android 7.0)
