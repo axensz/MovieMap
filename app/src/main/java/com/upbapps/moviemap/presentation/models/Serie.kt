@@ -12,4 +12,5 @@ data class Serie(
     @SerializedName("first_air_date") val first_air_date: String,
     @SerializedName("vote_average") val voteAverage: Double?,
     @SerializedName("overview") val overview: String,
+    @SerializedName("adult") val adult: Boolean?,
 )

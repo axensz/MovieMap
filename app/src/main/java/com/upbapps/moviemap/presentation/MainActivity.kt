@@ -72,6 +72,7 @@ fun Navigation(movieViewModel: MovieViewModel) {
             composable(BottomNavItem.Recientes.route) {
                 Recientes(navController, movieViewModel)
             }
+
             composable(BottomNavItem.Populares.route) {
                 Populares(navController, movieViewModel)
             }
