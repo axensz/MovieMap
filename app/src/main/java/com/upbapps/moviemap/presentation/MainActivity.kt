@@ -50,12 +50,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation(movieViewModel: MovieViewModel) {
     val navController = rememberNavController()
-    val currentUser = AuthManager.getCurrentUser()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    // Lista de rutas que no deben mostrar la barra inferior
-    val authRoutes = listOf("login", "register")
-    val showBottomBar = currentRoute !in authRoutes && currentUser != null
+    // Solo mostrar la barra inferior en las rutas principales
+    val showBottomBar = when (currentRoute) {
+        "login", "register" -> false
+        else -> true
+    }
 
     Scaffold(
         bottomBar = { 
@@ -71,84 +72,40 @@ fun Navigation(movieViewModel: MovieViewModel) {
         ) {
             // Rutas autenticadas
             composable(BottomNavItem.Home.route) {
-                if (currentUser != null) {
-                    Home(navController, movieViewModel)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                Home(navController, movieViewModel)
             }
             composable(BottomNavItem.Recientes.route) {
-                if (currentUser != null) {
-                    Recientes(navController, movieViewModel)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                Recientes(navController, movieViewModel)
             }
             composable(BottomNavItem.Populares.route) {
-                if (currentUser != null) {
-                    Populares(navController, movieViewModel)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                Populares(navController, movieViewModel)
             }
             composable(BottomNavItem.Listas.route) {
-                if (currentUser != null) {
-                    Listas(navController, movieViewModel)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                Listas(navController, movieViewModel)
             }
 
             // Rutas de autenticación
             composable("login") { Login(navController) }
             composable("register") { Register(navController) }
-            composable("user") { 
-                if (currentUser != null) {
-                    User(navController)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
-            }
+            composable("user") { User(navController) }
 
             // Rutas de detalles
             composable(
                 route = "details_movie/{movie}",
                 arguments = listOf(navArgument("movie") { type = NavType.StringType })
             ) { backStackEntry ->
-                if (currentUser != null) {
-                    val movieJSON = backStackEntry.arguments?.getString("movie")
-                    val movie = Gson().fromJson(movieJSON, Movie::class.java)
-                    DetailsMovie(navController, movie, movieViewModel)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                val movieJSON = backStackEntry.arguments?.getString("movie")
+                val movie = Gson().fromJson(movieJSON, Movie::class.java)
+                DetailsMovie(navController, movie, movieViewModel)
             }
 
             composable(
                 route = "details_serie/{serie}",
                 arguments = listOf(navArgument("serie") { type = NavType.StringType })
             ) { backStackEntry ->
-                if (currentUser != null) {
-                    val serieJSON = backStackEntry.arguments?.getString("serie")
-                    val serie = Gson().fromJson(serieJSON, Serie::class.java)
-                    DetailsSerie(navController, serie)
-                } else {
-                    navController.navigate("login") {
-                        popUpTo(0)
-                    }
-                }
+                val serieJSON = backStackEntry.arguments?.getString("serie")
+                val serie = Gson().fromJson(serieJSON, Serie::class.java)
+                DetailsSerie(navController, serie)
             }
         }
     }
