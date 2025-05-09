@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import android.net.Uri
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -83,7 +84,7 @@ fun Lists(navController: NavController, movieViewModel: MovieViewModel) {
                                 MovieListItem(
                                     movie = movie,
                                     onClick = {
-                                        val movieJson = Gson().toJson(movie)
+                                        val movieJson = Uri.encode(Gson().toJson(movie))
                                         navController.navigate("details_movie/${movieJson}")
                                     },
                                     onRemove = {
@@ -104,7 +105,7 @@ fun Lists(navController: NavController, movieViewModel: MovieViewModel) {
                                 SerieListItem(
                                     serie = serie,
                                     onClick = {
-                                        val serieJson = Gson().toJson(serie)
+                                        val serieJson = Uri.encode(Gson().toJson(serie))
                                         navController.navigate("details_serie/${serieJson}")
                                     },
                                     onRemove = {
