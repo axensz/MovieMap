@@ -49,7 +49,7 @@ fun FilterDialog(
                     OutlinedTextField(
                         value = genre,
                         onValueChange = { genre = it },
-                        label = { Text("Género (ID)") }
+                        label = { Text("Género") }
                     )
                     OutlinedTextField(
                         value = ageRating,

@@ -68,20 +68,32 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
 
     fun aplicarFiltrosPeliculas() {
         loading = true
-        getFilteredMovies(filtroYear, filtroRating, filtroGenre) { lista ->
-            peliculasFiltradas = lista
-            loading = false
-        }
+        getFilteredMovies(
+            year = filtroYear,
+            rating = filtroRating,
+            genre = filtroGenre,
+            mediaType = "movie",
+            onMovieResult = { lista -> // Especificar el callback para películas
+                peliculasFiltradas = lista
+                loading = false
+            },
+            onSerieResult = {} // Necesitas proporcionar un lambda para onSerieResult aunque esté vacío
+        )
     }
 
     fun aplicarFiltrosSeries() {
         loading = true
-        seriesFiltradas = series.filter { serie ->
-            (filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)) &&
-                    (filtroRating.isEmpty() || (serie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
-                    (filtroGenre.isEmpty() || serie.listGenress.any { it.toString() == filtroGenre })
-        }
-        loading = false
+        getFilteredMovies(
+            year = filtroYear,
+            rating = filtroRating,
+            genre = filtroGenre,
+            mediaType = "tv",
+            onMovieResult = {}, // Necesitas proporcionar un lambda para onMovieResult aunque esté vacío
+            onSerieResult = { lista -> // Especificar el callback para series
+                seriesFiltradas = lista
+                loading = false
+            }
+        )
     }
 
     fun aplicarFiltrosGeneral() {
@@ -185,7 +197,7 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
                     OutlinedTextField(
                         value = filtroRating,
                         onValueChange = { filtroRating = it },
-                        label = { Text("Calificación (1 a 5)") },
+                        label = { Text("Calificación (1 a 10)") },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Box {
