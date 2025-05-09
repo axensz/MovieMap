@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +13,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import com.google.gson.Gson
+import com.upbapps.moviemap.data.AuthManager
+import com.upbapps.moviemap.data.FirebaseManager
 import com.upbapps.moviemap.presentation.components.BottomBar
 import com.upbapps.moviemap.presentation.components.BottomNavItem
 import com.upbapps.moviemap.presentation.models.Movie
@@ -24,6 +26,13 @@ import com.upbapps.moviemap.ui.theme.MovieMapTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Verificar inicialización de Firebase silenciosamente
+        FirebaseManager.testConnection(
+            onSuccess = { },
+            onError = { }
+        )
+
         setContent {
             val movieViewModel: MovieViewModel = viewModel()
             MovieMapTheme {
@@ -36,14 +45,27 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation(movieViewModel: MovieViewModel) {
     val navController = rememberNavController()
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    // Solo mostrar la barra inferior en las rutas principales
+    val showBottomBar = when (currentRoute) {
+        "login", "register" -> false
+        else -> true
+    }
+
     Scaffold(
-        bottomBar = { BottomBar(navController) }
+        bottomBar = { 
+            if (showBottomBar) {
+                BottomBar(navController)
+            }
+        }
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = "login"//BottomNavItem.Home.route
-            ,modifier = Modifier.padding(padding)
+            startDestination = "login",
+            modifier = Modifier.padding(padding)
         ) {
+            // Rutas autenticadas
             composable(BottomNavItem.Home.route) {
                 Home(navController, movieViewModel)
             }
@@ -57,10 +79,12 @@ fun Navigation(movieViewModel: MovieViewModel) {
                 Listas(navController, movieViewModel)
             }
 
+            // Rutas de autenticación
             composable("login") { Login(navController) }
-            composable("registro") { Register(navController) }
+            composable("register") { Register(navController) }
             composable("user") { User(navController) }
 
+            // Rutas de detalles
             composable(
                 route = "details_movie/{movie}",
                 arguments = listOf(navArgument("movie") { type = NavType.StringType })
