@@ -72,7 +72,7 @@ fun DetailsMovie(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(movie.title, style = MaterialTheme.typography.titleMedium)
+                Text(movie.title, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
 
                 LazyRow {
                     items(genresNames) { genre ->
@@ -84,13 +84,15 @@ fun DetailsMovie(
                 Text(
                     movie.overview,
                     modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Text(
                     movie.releaseDate,
                     modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
                 Row(modifier = Modifier.padding(8.dp)) {
@@ -102,12 +104,14 @@ fun DetailsMovie(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage)
+                        text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "(${movie.voteCount}) votos",
-                        color = Color.LightGray
+                        color = Color.LightGray,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
 

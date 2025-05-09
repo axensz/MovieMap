@@ -67,7 +67,7 @@ fun DetailsSerie(navController: NavController, serie: Serie, movieViewModel: Mov
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(serie.name, style = MaterialTheme.typography.titleMedium)
+                Text(serie.name, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
 
                 LazyRow {
                     items(genresNames) { genre ->
@@ -79,13 +79,15 @@ fun DetailsSerie(navController: NavController, serie: Serie, movieViewModel: Mov
                 Text(
                     serie.overview,
                     modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Text(
                     serie.first_air_date,
                     modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.secondary
                 )
 
                 Row(modifier = Modifier.padding(8.dp)) {
@@ -97,12 +99,14 @@ fun DetailsSerie(navController: NavController, serie: Serie, movieViewModel: Mov
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = String.format(Locale.getDefault(), "%.1f", serie.voteAverage)
+                        text = String.format(Locale.getDefault(), "%.1f", serie.voteAverage),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "(${serie.voteCount}) votos",
-                        color = Color.LightGray
+                        color = Color.LightGray,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
 
@@ -163,7 +167,7 @@ val genresSeriesMap = mapOf(
     10764 to "Realidad",
     10765 to "Fantasía y Sci Fi",
     10770 to "Película TV",
-    10766 to "Soap",x
+    10766 to "Soap",
     10637 to "Hablar",
     10738 to "Guerra y política",
     37 to "Western"
