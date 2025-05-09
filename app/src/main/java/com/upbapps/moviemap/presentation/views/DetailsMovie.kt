@@ -12,6 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
@@ -34,108 +36,123 @@ fun DetailsMovie(
     movieViewModel: MovieViewModel
 ) {
     val genresNames = movie.listGenress.mapNotNull { genresMap[it] }
-    var showDialog by remember { mutableStateOf(false) }
-    Column {
-        Header(navController)
-        Box {
-            AsyncImage(
-                model = IMAGE_BASE_URL + movie.backdropPath,
-                contentDescription = movie.title,
-                modifier = Modifier.fillMaxWidth()
-            )
-            IconButton(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(36.dp)
-                    .background(
-                        color = Color.Black.copy(alpha = 0.5f),
-                        shape = CircleShape
-                    )
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
-                    tint = Color.White
-                )
-            }
+    val isFavorite = movieViewModel.isMovieFavorite(movie.id)
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSnackbar by remember { mutableStateOf(false) }
+    var snackbarMessage by remember { mutableStateOf("") }
+
+    LaunchedEffect(showSnackbar) {
+        if (showSnackbar && snackbarMessage.isNotEmpty()) {
+            snackbarHostState.showSnackbar(snackbarMessage)
+            showSnackbar = false
         }
+    }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(movie.title, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
-
-                LazyRow {
-                    items(genresNames) { genre ->
-                        GenreView(genre)
-                        Spacer(modifier = Modifier.width(4.dp))
-                    }
-                }
-
-                Text(
-                    movie.overview,
-                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Text(
-                    movie.releaseDate,
-                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-
-                Row(modifier = Modifier.padding(8.dp)) {
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Rating",
-                        tint = Color(0xFFFFC107),
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "(${movie.voteCount}) votos",
-                        color = Color.LightGray,
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                }
-
-                // ✅ Botón para agregar a Listas
-                Button(
-                    onClick = {
-                        movieViewModel.addMovieToFavorites(movie)
-                        showDialog = true
-                    },
+    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            Header(navController)
+            Box {
+                AsyncImage(
+                    model = IMAGE_BASE_URL + movie.backdropPath,
+                    contentDescription = movie.title,
                     modifier = Modifier.fillMaxWidth()
+                )
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(36.dp)
+                        .background(
+                            color = Color.Black.copy(alpha = 0.5f),
+                            shape = CircleShape
+                        )
+                        .align(Alignment.TopStart)
                 ) {
-                    Text("Agregar a Listas")
-                }
-                if (showDialog) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog = false },
-                        title = { Text("Agregado") },
-                        text = { Text("Se agregó a favoritos.") },
-                        confirmButton = {
-                            TextButton(onClick = { showDialog = false }) {
-                                Text("OK")
-                            }
-                        }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Volver",
+                        tint = Color.White
                     )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(movie.title, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
+
+                    LazyRow {
+                        items(genresNames) { genre ->
+                            GenreView(genre)
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                    }
+
+                    Text(
+                        movie.overview,
+                        modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+                    Text(
+                        movie.releaseDate,
+                        modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+
+                    Row(modifier = Modifier.padding(8.dp)) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Rating",
+                            tint = Color(0xFFFFC107),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "(${movie.voteCount}) votos",
+                            color = Color.LightGray,
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
+
+                    // Icono de favorito
+                    IconButton(
+                        onClick = {
+                            if (isFavorite) {
+                                movieViewModel.removeMovieFromFavorites(movie)
+                                snackbarMessage = "Se eliminó de favoritos."
+                            } else {
+                                movieViewModel.addMovieToFavorites(movie)
+                                snackbarMessage = "Se agregó a favoritos."
+                            }
+                            showSnackbar = true
+                        },
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = if (isFavorite) "En favoritos" else "Agregar a favoritos",
+                            tint = if (isFavorite) Color.Red else Color.Gray,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+                    if (isFavorite) {
+                        Text("En favoritos", color = Color.Red, style = MaterialTheme.typography.labelMedium)
+                    }
                 }
             }
         }
