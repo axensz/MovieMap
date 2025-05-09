@@ -3,6 +3,7 @@ package com.upbapps.moviemap.data
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -40,7 +41,7 @@ object AuthManager {
         }
     }
 
-    fun register(email: String, password: String, onSuccess: (FirebaseUser) -> Unit, onError: (String) -> Unit) {
+    fun register(email: String, password: String, username: String, onSuccess: (FirebaseUser) -> Unit, onError: (String) -> Unit) {
         try {
             Log.d(TAG, "Intentando registrar usuario con email: $email")
             if (password.length < 6) {
@@ -52,9 +53,21 @@ object AuthManager {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "createUserWithEmail:success")
-                        auth.currentUser?.let { user ->
-                            onSuccess(user)
-                        }
+                        // Actualizar el perfil con el nombre de usuario
+                        val profileUpdates = UserProfileChangeRequest.Builder()
+                            .setDisplayName(username)
+                            .build()
+
+                        auth.currentUser?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener { profileTask ->
+                                if (profileTask.isSuccessful) {
+                                    auth.currentUser?.let { user ->
+                                        onSuccess(user)
+                                    }
+                                } else {
+                                    onError("Error al actualizar el perfil")
+                                }
+                            }
                     } else {
                         val errorMessage = when {
                             task.exception?.message?.contains("email address is already in use") == true -> 
@@ -80,5 +93,9 @@ object AuthManager {
         } catch (e: Exception) {
             Log.e(TAG, "Error al cerrar sesión", e)
         }
+    }
+
+    fun getUsername(): String {
+        return auth.currentUser?.displayName ?: "Usuario"
     }
 } 

@@ -26,6 +26,7 @@ fun Register(navController: NavController) {
     var correo by remember { mutableStateOf("") }
     var contraseña by remember { mutableStateOf("") }
     var confirmarContraseña by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -58,6 +59,16 @@ fun Register(navController: NavController) {
         )
         
         Spacer(modifier = Modifier.height(32.dp))
+
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text(text = "Nombre de usuario") },
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = correo,
@@ -109,7 +120,7 @@ fun Register(navController: NavController) {
         
         Button(
             onClick = {
-                if (correo.isEmpty() || contraseña.isEmpty() || confirmarContraseña.isEmpty()) {
+                if (username.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || confirmarContraseña.isEmpty()) {
                     errorMessage = "Por favor, completa todos los campos"
                     showErrorDialog = true
                     return@Button
@@ -126,6 +137,7 @@ fun Register(navController: NavController) {
                 AuthManager.register(
                     email = correo,
                     password = contraseña,
+                    username = username,
                     onSuccess = { user ->
                         isLoading = false
                         navController.navigate("home") {
