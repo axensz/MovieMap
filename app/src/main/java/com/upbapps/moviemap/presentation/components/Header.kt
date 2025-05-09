@@ -40,6 +40,10 @@ fun Header(navController: NavController){
         IconButton(
             onClick = {navController.navigate("user"){
                 launchSingleTop = true
+                popUpTo("home") {
+                    saveState = true
+                    inclusive = false
+                }
             } }
         ) {
             Icon(
