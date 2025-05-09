@@ -1,7 +1,6 @@
 package com.upbapps.moviemap.presentation
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -28,14 +27,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Verificar inicialización de Firebase
+        // Verificar inicialización de Firebase silenciosamente
         FirebaseManager.testConnection(
-            onSuccess = {
-                Toast.makeText(this, "Firebase inicializado correctamente", Toast.LENGTH_SHORT).show()
-            },
-            onError = { error ->
-                Toast.makeText(this, "Error de inicialización: $error", Toast.LENGTH_LONG).show()
-            }
+            onSuccess = { },
+            onError = { }
         )
 
         setContent {
