@@ -39,12 +39,14 @@ fun Populares(navController: NavHostController, viewModel: MovieViewModel) {
     // Filtros
     var showFilterDialog by remember { mutableStateOf(false) }
     var filtroYear by remember { mutableStateOf("") }
+    var filtroRating by remember { mutableStateOf("") }
+    var filtroGenre by remember { mutableStateOf("") }
+    var expandedGenre by remember { mutableStateOf(false) }
 
     val generos = mapOf(
         28 to "Acción", 35 to "Comedia", 18 to "Drama", 27 to "Terror",
         10749 to "Romance", 16 to "Animación", 878 to "Ciencia Ficción"
     )
-    val generosReverso = generos.entries.associate { (k, v) -> v to k.toString() }
 
     LaunchedEffect(Unit) {
         if (peliculas.isEmpty() && series.isEmpty()) {
@@ -66,7 +68,7 @@ fun Populares(navController: NavHostController, viewModel: MovieViewModel) {
 
     fun aplicarFiltrosPeliculas() {
         loading = true
-        getFilteredMovies(filtroYear, "", "") { lista ->
+        getFilteredMovies(filtroYear, filtroRating, filtroGenre) { lista ->
             peliculasFiltradas = lista
             loading = false
         }
@@ -75,7 +77,9 @@ fun Populares(navController: NavHostController, viewModel: MovieViewModel) {
     fun aplicarFiltrosSeries() {
         loading = true
         seriesFiltradas = series.filter { serie ->
-            filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)
+            (filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)) &&
+                    (filtroRating.isEmpty() || (serie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
+                    (filtroGenre.isEmpty() || serie.listGenress.any { it.toString() == filtroGenre })
         }
         loading = false
     }
@@ -181,6 +185,37 @@ fun Populares(navController: NavHostController, viewModel: MovieViewModel) {
                         label = { Text("Año de estreno") },
                         modifier = Modifier.fillMaxWidth()
                     )
+                    OutlinedTextField(
+                        value = filtroRating,
+                        onValueChange = { filtroRating = it },
+                        label = { Text("Calificación (1 a 5)") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Box {
+                        OutlinedTextField(
+                            value = generos[filtroGenre.toIntOrNull()] ?: "",
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("Género") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { expandedGenre = true }
+                        )
+                        DropdownMenu(
+                            expanded = expandedGenre,
+                            onDismissRequest = { expandedGenre = false }
+                        ) {
+                            generos.forEach { (id, nombre) ->
+                                DropdownMenuItem(
+                                    text = { Text(nombre) },
+                                    onClick = {
+                                        filtroGenre = id.toString()
+                                        expandedGenre = false
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             },
             confirmButton = {
