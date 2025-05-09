@@ -42,7 +42,6 @@ fun Lists(navController: NavController, movieViewModel: MovieViewModel) {
 
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            Header(navController)
             Column(
                 modifier = Modifier
                     .fillMaxSize()

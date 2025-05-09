@@ -3,6 +3,8 @@ package com.upbapps.moviemap.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,6 +19,7 @@ import com.upbapps.moviemap.data.AuthManager
 import com.upbapps.moviemap.data.FirebaseManager
 import com.upbapps.moviemap.presentation.components.BottomBar
 import com.upbapps.moviemap.presentation.components.BottomNavItem
+import com.upbapps.moviemap.presentation.components.Header
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.models.Serie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
@@ -71,54 +74,57 @@ fun Navigation(movieViewModel: MovieViewModel) {
     }
 
     Scaffold(
+        topBar = { Header(navController) },
         bottomBar = { 
             if (showBottomBar) {
                 BottomBar(navController)
             }
         }
     ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = if (authState != null) "home" else "login",
-            modifier = Modifier.padding(padding)
-        ) {
-            // Rutas autenticadas
-            composable(BottomNavItem.Home.route) {
-                Home(navController, movieViewModel)
-            }
-            composable(BottomNavItem.Recientes.route) {
-                Recientes(navController, movieViewModel)
-            }
+        Box(modifier = Modifier.padding(padding)) {
+            NavHost(
+                navController = navController,
+                startDestination = if (authState != null) "home" else "login",
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Rutas autenticadas
+                composable(BottomNavItem.Home.route) {
+                    Home(navController, movieViewModel)
+                }
+                composable(BottomNavItem.Recientes.route) {
+                    Recientes(navController, movieViewModel)
+                }
 
-            composable(BottomNavItem.Populares.route) {
-                Populares(navController, movieViewModel)
-            }
-            composable(BottomNavItem.Listas.route) {
-                Lists(navController, movieViewModel)
-            }
+                composable(BottomNavItem.Populares.route) {
+                    Populares(navController, movieViewModel)
+                }
+                composable(BottomNavItem.Listas.route) {
+                    Lists(navController, movieViewModel)
+                }
 
-            // Rutas de autenticación
-            composable("login") { Login(navController) }
-            composable("register") { Register(navController) }
-            composable("user") { User(navController) }
+                // Rutas de autenticación
+                composable("login") { Login(navController) }
+                composable("register") { Register(navController) }
+                composable("user") { User(navController) }
 
-            // Rutas de detalles
-            composable(
-                route = "details_movie/{movie}",
-                arguments = listOf(navArgument("movie") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val movieJSON = backStackEntry.arguments?.getString("movie")
-                val movie = Gson().fromJson(movieJSON, Movie::class.java)
-                DetailsMovie(navController, movie, movieViewModel)
-            }
+                // Rutas de detalles
+                composable(
+                    route = "details_movie/{movie}",
+                    arguments = listOf(navArgument("movie") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val movieJSON = backStackEntry.arguments?.getString("movie")
+                    val movie = Gson().fromJson(movieJSON, Movie::class.java)
+                    DetailsMovie(navController, movie, movieViewModel)
+                }
 
-            composable(
-                route = "details_serie/{serie}",
-                arguments = listOf(navArgument("serie") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val serieJSON = backStackEntry.arguments?.getString("serie")
-                val serie = Gson().fromJson(serieJSON, Serie::class.java)
-                DetailsSerie(navController, serie, movieViewModel)
+                composable(
+                    route = "details_serie/{serie}",
+                    arguments = listOf(navArgument("serie") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val serieJSON = backStackEntry.arguments?.getString("serie")
+                    val serie = Gson().fromJson(serieJSON, Serie::class.java)
+                    DetailsSerie(navController, serie, movieViewModel)
+                }
             }
         }
     }

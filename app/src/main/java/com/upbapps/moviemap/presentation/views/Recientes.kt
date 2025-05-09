@@ -106,8 +106,6 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
     }
 
     Column {
-        Header(navController)
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
