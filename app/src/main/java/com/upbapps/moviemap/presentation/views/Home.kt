@@ -70,7 +70,6 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
     }
 
     Column {
-        Header(navController)
         Column(
             modifier = Modifier
                 .fillMaxSize()

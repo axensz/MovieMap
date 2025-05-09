@@ -13,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.upbapps.moviemap.data.AuthManager
-import com.upbapps.moviemap.presentation.components.Header
 
 @Composable
 fun User(navController: NavController) {
@@ -47,7 +46,6 @@ fun User(navController: NavController) {
     }
 
     Column {
-        Header(navController)
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -50,7 +50,6 @@ fun DetailsMovie(
 
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            Header(navController)
             Box {
                 AsyncImage(
                     model = IMAGE_BASE_URL + movie.backdropPath,
