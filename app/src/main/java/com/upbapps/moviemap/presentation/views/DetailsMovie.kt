@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +34,7 @@ fun DetailsMovie(
     movieViewModel: MovieViewModel
 ) {
     val genresNames = movie.listGenress.mapNotNull { genresMap[it] }
-
+    var showDialog by remember { mutableStateOf(false) }
     Column {
         Header(navController)
         Box {
@@ -112,10 +113,25 @@ fun DetailsMovie(
 
                 // ✅ Botón para agregar a Listas
                 Button(
-                    onClick = { movieViewModel.addMovieToFavorites(movie) },
+                    onClick = {
+                        movieViewModel.addMovieToFavorites(movie)
+                        showDialog = true
+                    },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Agregar a Listas")
+                }
+                if (showDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text("Agregado") },
+                        text = { Text("Se agregó a favoritos.") },
+                        confirmButton = {
+                            TextButton(onClick = { showDialog = false }) {
+                                Text("OK")
+                            }
+                        }
+                    )
                 }
             }
         }

@@ -1,17 +1,7 @@
 package com.upbapps.moviemap.presentation.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -21,12 +11,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,15 +21,18 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.components.Header
 import com.upbapps.moviemap.presentation.models.Serie
+import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
+import java.util.Locale
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
 @Composable
-fun DetailsSerie(navController: NavController, serie: Serie){
-    val genres_names = serie.listGenress.mapNotNull { genresSeriesMap[it] }
+fun DetailsSerie(navController: NavController, serie: Serie, movieViewModel: MovieViewModel) {
+    val genresNames = serie.listGenress.mapNotNull { genresSeriesMap[it] }
+    var showDialog by remember { mutableStateOf(false) }
     Column {
         Header(navController)
-        Box{
+        Box {
             AsyncImage(
                 model = IMAGE_BASE_URL + serie.backdropPath,
                 contentDescription = serie.name,
@@ -81,15 +70,25 @@ fun DetailsSerie(navController: NavController, serie: Serie){
                 Text(serie.name, style = MaterialTheme.typography.titleMedium)
 
                 LazyRow {
-                    items(genres_names) { genre ->
-                        genreSerieView(genre)
+                    items(genresNames) { genre ->
+                        GenreSerieView(genre)
                         Spacer(modifier = Modifier.width(4.dp))
                     }
                 }
 
-                Text(serie.overview, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
-                Text(serie.first_air_date, modifier = Modifier.padding(top = 15.dp, start = 7.dp), style = MaterialTheme.typography.bodyMedium)
-                Row(modifier = Modifier.padding(8.dp)){
+                Text(
+                    serie.overview,
+                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    serie.first_air_date,
+                    modifier = Modifier.padding(top = 15.dp, start = 7.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Row(modifier = Modifier.padding(8.dp)) {
                     Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = "Rating",
@@ -98,7 +97,7 @@ fun DetailsSerie(navController: NavController, serie: Serie){
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = String.format("%.1f", serie.voteAverage)
+                        text = String.format(Locale.getDefault(), "%.1f", serie.voteAverage)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -106,25 +105,36 @@ fun DetailsSerie(navController: NavController, serie: Serie){
                         color = Color.LightGray
                     )
                 }
-                // Botón para agregar serie a listas
-                androidx.compose.material3.Button(
+
+                Button(
                     onClick = {
-                        println("Serie agregada a la lista: ${serie.name}")
-                        // TODO: función para guardar serie en listas
+                        movieViewModel.addSerieToFavorites(serie)
+                        showDialog = true
                     },
                     modifier = Modifier.padding(top = 20.dp)
                 ) {
                     Text("Agregar a Listas")
+                }
+
+                if (showDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text("Agregado") },
+                        text = { Text("Se agregó a favoritos.") },
+                        confirmButton = {
+                            TextButton(onClick = { showDialog = false }) {
+                                Text("OK")
+                            }
+                        }
+                    )
                 }
             }
         }
     }
 }
 
-
 @Composable
-fun genreSerieView(genre: String){
-
+fun GenreSerieView(genre: String) {
     Surface(
         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
         shape = RoundedCornerShape(16.dp),
@@ -153,7 +163,7 @@ val genresSeriesMap = mapOf(
     10764 to "Realidad",
     10765 to "Fantasía y Sci Fi",
     10770 to "Película TV",
-    10766 to "Soap",
+    10766 to "Soap",x
     10637 to "Hablar",
     10738 to "Guerra y política",
     37 to "Western"

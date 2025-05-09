@@ -118,7 +118,7 @@ fun Navigation(movieViewModel: MovieViewModel) {
             ) { backStackEntry ->
                 val serieJSON = backStackEntry.arguments?.getString("serie")
                 val serie = Gson().fromJson(serieJSON, Serie::class.java)
-                DetailsSerie(navController, serie)
+                DetailsSerie(navController, serie, movieViewModel)
             }
         }
     }
