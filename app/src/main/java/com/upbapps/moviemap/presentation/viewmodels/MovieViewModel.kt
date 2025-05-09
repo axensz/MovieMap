@@ -14,10 +14,6 @@ class MovieViewModel : ViewModel() {
             favoriteMovies.add(movie)
         }
     }
-
-    fun removeFromList(movie: Movie) {
-        favoriteMovies.removeIf { it.id == movie.id }
-    }
 }
 
 

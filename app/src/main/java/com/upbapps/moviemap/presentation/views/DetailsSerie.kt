@@ -40,7 +40,7 @@ private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
 @Composable
 fun DetailsSerie(navController: NavController, serie: Serie){
-    val genres_names = serie.list_genres.mapNotNull { genresSeriesMap[it] }
+    val genres_names = serie.listGenress.mapNotNull { genresSeriesMap[it] }
     Column {
         Header(navController)
         Box{

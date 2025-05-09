@@ -17,7 +17,7 @@ fun getUpcomingMovies(onResult: (List<Movie>) -> Unit){
 
     val request = Request.Builder()
         .url("https://api.themoviedb.org/3/movie/upcoming?language=es-ES")
-        .addHeader("Authorization", "Bearer "+ tk)
+        .addHeader("Authorization", "Bearer $tk")
         .build()
 
     client.newCall(request).enqueue(object : Callback {
@@ -28,7 +28,7 @@ fun getUpcomingMovies(onResult: (List<Movie>) -> Unit){
             response.body?.string().let {json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.results ?: emptyList())
+                onResult(movieResponse.results)
             }
         }
     })

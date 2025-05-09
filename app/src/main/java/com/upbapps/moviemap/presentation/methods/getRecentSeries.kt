@@ -17,7 +17,7 @@ fun getRecentSeries(onResult: (List<Serie>) -> Unit){
 
     val request = Request.Builder()
         .url("https://api.themoviedb.org/3/tv/on_the_air?&language=es-ES&page=1")
-        .addHeader("Authorization", "Bearer "+ tk)
+        .addHeader("Authorization", "Bearer $tk")
         .build()
 
     client.newCall(request).enqueue(object : Callback {
@@ -28,7 +28,7 @@ fun getRecentSeries(onResult: (List<Serie>) -> Unit){
             response.body?.string().let {json ->
                 val gson = Gson()
                 val serieResponse = gson.fromJson(json, SerieResponse::class.java)
-                onResult(serieResponse.results ?: emptyList())
+                onResult(serieResponse.results)
             }
         }
     })

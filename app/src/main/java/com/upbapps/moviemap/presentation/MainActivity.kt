@@ -46,11 +46,28 @@ class MainActivity : ComponentActivity() {
 fun Navigation(movieViewModel: MovieViewModel) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val authState by AuthManager.authState.collectAsState()
 
     // Solo mostrar la barra inferior en las rutas principales
     val showBottomBar = when (currentRoute) {
         "login", "register" -> false
         else -> true
+    }
+
+    // Efecto para manejar la navegación basada en el estado de autenticación
+    LaunchedEffect(authState) {
+        when {
+            authState != null && currentRoute == "login" -> {
+                navController.navigate("home") {
+                    popUpTo("login") { inclusive = true }
+                }
+            }
+            authState == null && currentRoute != "login" && currentRoute != "register" -> {
+                navController.navigate("login") {
+                    popUpTo(0) { inclusive = true }
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -62,7 +79,7 @@ fun Navigation(movieViewModel: MovieViewModel) {
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = "login",
+            startDestination = if (authState != null) "home" else "login",
             modifier = Modifier.padding(padding)
         ) {
             // Rutas autenticadas

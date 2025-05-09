@@ -19,7 +19,7 @@ fun getMovies(onResult: (List<Movie>) -> Unit) {
         ?.addQueryParameter("language", "es-ES")
         ?.addQueryParameter("include_adult", "false")
         ?.addQueryParameter("include_video", "false")
-        ?.addQueryParameter("page", "1") // Asegúrate de tener la paginación controlada desde el ViewModel/UI si es necesario
+        ?.addQueryParameter("page", "1")
         ?.addQueryParameter("sort_by", "popularity.desc")
 
     val request = Request.Builder()
@@ -33,10 +33,10 @@ fun getMovies(onResult: (List<Movie>) -> Unit) {
         }
 
         override fun onResponse(call: Call, response: Response) {
-            response.body?.string().let { json ->
+            response.body?.string()?.let { json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.results ?: emptyList())
+                onResult(movieResponse.results) // Ajustado para no usar el operador Elvis innecesariamente
             }
         }
     })
@@ -53,7 +53,7 @@ fun getFilteredMovies(
         ?.addQueryParameter("language", "es-ES")
         ?.addQueryParameter("include_adult", "false")
         ?.addQueryParameter("include_video", "false")
-        ?.addQueryParameter("page", "1") // Asegúrate de tener la paginación controlada desde el ViewModel/UI si es necesario
+        ?.addQueryParameter("page", "1")
         ?.addQueryParameter("sort_by", "popularity.desc")
 
     if (year.isNotEmpty()) {
@@ -83,8 +83,7 @@ fun getFilteredMovies(
             response.body?.string()?.let { json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.results ?: emptyList())
-            }
+                onResult(movieResponse.results)             }
         }
     })
 }

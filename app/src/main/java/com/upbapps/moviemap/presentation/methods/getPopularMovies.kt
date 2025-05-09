@@ -12,23 +12,24 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-fun getPopularMovies(onResult: (List<Movie>) -> Unit){
+fun getPopularMovies(onResult: (List<Movie>) -> Unit) {
     val client = OkHttpClient()
 
     val request = Request.Builder()
         .url("https://api.themoviedb.org/3/movie/popular?language=es-ES&page=1")
-        .addHeader("Authorization", "Bearer "+ tk)
+        .addHeader("Authorization", "Bearer $tk") // Cambiado a interpolación de Strings
         .build()
 
     client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException){
+        override fun onFailure(call: Call, e: IOException) {
             Log.e("Error", e.message ?: "")
         }
-        override fun onResponse(call: Call, response: Response){
-            response.body?.string().let {json ->
+
+        override fun onResponse(call: Call, response: Response) {
+            response.body?.string()?.let { json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.results ?: emptyList())
+                onResult(movieResponse.results)
             }
         }
     })

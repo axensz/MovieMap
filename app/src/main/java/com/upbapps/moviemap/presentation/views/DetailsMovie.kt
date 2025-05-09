@@ -31,7 +31,7 @@ fun DetailsMovie(
     movie: Movie,
     movieViewModel: MovieViewModel
 ) {
-    val genres_names = movie.list_genres.mapNotNull { genresMap[it] }
+    val genres_names = movie.listGenress.mapNotNull { genresMap[it] }
 
     Column {
         Header(navController)

@@ -17,7 +17,7 @@ fun getRecentMovies(onResult: (List<Movie>) -> Unit){
 
     val request = Request.Builder()
         .url("https://api.themoviedb.org/3/movie/now_playing?language=es-ES&page=1")
-        .addHeader("Authorization", "Bearer "+ tk)
+        .addHeader("Authorization", "Bearer $tk")
         .build()
 
     client.newCall(request).enqueue(object : Callback {
@@ -28,7 +28,7 @@ fun getRecentMovies(onResult: (List<Movie>) -> Unit){
             response.body?.string().let {json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
-                onResult(movieResponse.results ?: emptyList())
+                onResult(movieResponse.results)
             }
         }
     })

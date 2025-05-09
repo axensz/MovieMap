@@ -79,7 +79,7 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
         seriesFiltradas = series.filter { serie ->
             (filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)) &&
                     (filtroRating.isEmpty() || (serie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
-                    (filtroGenre.isEmpty() || serie.list_genres.any { it.toString() == filtroGenre })
+                    (filtroGenre.isEmpty() || serie.listGenress.any { it.toString() == filtroGenre })
         }
         loading = false
     }
