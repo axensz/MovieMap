@@ -28,6 +28,70 @@ Enlace al diseño:
 
 ---
 
+## Arquitectura y Estructura del Proyecto
+
+### Arquitectura
+El proyecto sigue una arquitectura limpia (Clean Architecture) con una clara separación de capas:
+- `data/`: Capa de datos y acceso a fuentes externas
+- `presentation/`: Capa de presentación y lógica de negocio
+- `ui/`: Capa de interfaz de usuario y componentes visuales
+
+### Patrones de Diseño
+- MVVM (Model-View-ViewModel)
+- Repository Pattern
+- Clean Architecture
+
+### Dependencias Principales
+- **Frontend**:
+  - Jetpack Compose
+  - Material3
+  - Coil (carga de imágenes)
+  - Navigation Compose
+
+- **Backend**:
+  - Firebase:
+    - Authentication
+    - Firestore
+    - Storage
+    - Analytics
+
+- **Networking**:
+  - OkHttp
+  - Gson
+
+### Configuración Técnica
+- SDK mínimo: 24 (Android 7.0)
+- SDK objetivo: 35
+- Java 11
+- Kotlin
+
+### Estructura de Carpetas
+```
+app/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/upbapps/moviemap/
+│   │   │       ├── data/
+│   │   │       ├── presentation/
+│   │   │       └── ui/
+│   │   ├── res/
+│   │   └── AndroidManifest.xml
+├── build.gradle.kts
+└── proguard-rules.pro
+```
+
+### Seguridad
+- Implementación de reglas de Firestore
+- Firebase Authentication para manejo seguro de usuarios
+
+### Testing
+- JUnit para pruebas unitarias
+- Espresso para pruebas de UI
+- AndroidX Test para pruebas de integración
+
+---
+
 ## Package Name
 
 ```kotlin
