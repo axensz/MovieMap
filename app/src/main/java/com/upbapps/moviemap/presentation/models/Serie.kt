@@ -11,6 +11,7 @@ data class Serie(
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("first_air_date") val first_air_date: String,
     @SerializedName("vote_average") val voteAverage: Double?,
+    @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("overview") val overview: String,
     @SerializedName("adult") val adult: Boolean?,
 )

@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -19,6 +21,7 @@ import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
 import androidx.compose.ui.graphics.Color
 import com.upbapps.moviemap.presentation.components.Header
+import androidx.compose.material.icons.filled.Star
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -60,10 +63,12 @@ fun DetailsMovie(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(movie.title, style = MaterialTheme.typography.titleMedium)
 
@@ -85,6 +90,24 @@ fun DetailsMovie(
                     modifier = Modifier.padding(top = 15.dp, start = 7.dp),
                     style = MaterialTheme.typography.bodyMedium
                 )
+
+                Row(modifier = Modifier.padding(8.dp)){
+                    Icon(
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = "Rating",
+                        tint = Color(0xFFFFC107),
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = String.format("%.1f", movie.voteAverage)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "(${movie.voteCount}) votos",
+                        color = Color.LightGray
+                    )
+                }
 
                 // ✅ Botón para agregar a Listas
                 Button(

@@ -10,7 +10,8 @@ data class Movie(
     @SerializedName("genre_ids") val list_genres: List<Int>,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("release_date") val releaseDate: String,
-    @SerializedName("vote_average") val voteAverage: Double?,
+    @SerializedName("vote_average") val voteAverage: Double,
+    @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("overview") val overview: String,
     @SerializedName("adult") val adult: Boolean?
 )
