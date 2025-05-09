@@ -13,5 +13,6 @@ data class Serie(
     @SerializedName("vote_average") val voteAverage: Double? = 0.0,
     @SerializedName("vote_count") val voteCount: Int = 0,
     @SerializedName("overview") val overview: String = "",
-    @SerializedName("adult") val adult: Boolean? = null
+    @SerializedName("adult") val adult: Boolean? = null,
+    @SerializedName("platform") val platform: String? = null
 )

@@ -74,7 +74,11 @@ fun Navigation(movieViewModel: MovieViewModel) {
     }
 
     Scaffold(
-        topBar = { Header(navController) },
+        topBar = { 
+            if (currentRoute != "login" && currentRoute != "register") {
+                Header(navController)
+            }
+        },
         bottomBar = { 
             if (showBottomBar) {
                 BottomBar(navController)

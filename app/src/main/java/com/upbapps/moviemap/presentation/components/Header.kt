@@ -1,14 +1,13 @@
 package com.upbapps.moviemap.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable // Se asegura la importación correcta
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.clickable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,21 +32,26 @@ fun Header(navController: NavController){
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
-            modifier = Modifier.width(80.dp).clickable { navController.navigate("home") }
+            modifier = Modifier
+                .width(80.dp)
+                .clickable { navController.navigate("home") } // Uso de clickable
         )
-        Text(text = "MovieMap",
+        Text(
+            text = "MovieMap",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.clickable { navController.navigate("home") }
+            modifier = Modifier.clickable { navController.navigate("home") } // Uso de clickable
         )
         IconButton(
-            onClick = {navController.navigate("user"){
-                launchSingleTop = true
-                popUpTo("home") {
-                    saveState = true
-                    inclusive = false
+            onClick = {
+                navController.navigate("user") {
+                    launchSingleTop = true
+                    popUpTo("home") {
+                        saveState = true
+                        inclusive = false
+                    }
                 }
-            } }
+            }
         ) {
             Icon(
                 imageVector = Icons.Default.Person,

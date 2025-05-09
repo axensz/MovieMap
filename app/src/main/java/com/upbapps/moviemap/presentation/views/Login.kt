@@ -59,7 +59,7 @@ fun Login(navController: NavController) {
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "MovieApp",
+            text = "MovieMap",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
@@ -93,13 +93,6 @@ fun Login(navController: NavController) {
             }
         )
 
-        TextButton(
-            onClick = {},
-            colors = ButtonDefaults.textButtonColors(contentColor = Color.DarkGray)
-        ) {
-            Text(text = "¿Olvidaste tu contraseña?")
-        }
-        
         Spacer(modifier = Modifier.height(40.dp))
         
         Button(
