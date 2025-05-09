@@ -9,6 +9,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.upbapps.moviemap.presentation.components.Header
@@ -25,6 +27,7 @@ import com.upbapps.moviemap.presentation.methods.getTopRatedMovies
 import com.upbapps.moviemap.presentation.methods.getTopRatedSeries
 import com.upbapps.moviemap.presentation.methods.getTrendingTodayMovies
 import com.upbapps.moviemap.presentation.methods.getUpcomingMovies
+import kotlinx.coroutines.delay
 
 @Composable
 fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
@@ -32,15 +35,34 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
     var seriesTop by remember { mutableStateOf<List<Serie>>(emptyList()) }
     var peliculasTendencia by remember { mutableStateOf<List<Movie>>(emptyList()) }
     var peliculasProximas by remember { mutableStateOf<List<Movie>>(emptyList()) }
-    var loading by remember { mutableStateOf(false) }
+    var loading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
+    var loadingProgress by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
         loading = true
-        getTrendingTodayMovies { lista -> peliculasTendencia = lista }
-        getTopRatedMovies { lista -> peliculasTop = lista }
-        getTopRatedSeries { lista -> seriesTop = lista }
-        getUpcomingMovies { lista -> peliculasProximas = lista }
+        loadingProgress = 0
+        
+        // Cargar datos con progreso visual
+        getTrendingTodayMovies { lista -> 
+            peliculasTendencia = lista
+            loadingProgress += 25
+        }
+        getTopRatedMovies { lista -> 
+            peliculasTop = lista
+            loadingProgress += 25
+        }
+        getTopRatedSeries { lista -> 
+            seriesTop = lista
+            loadingProgress += 25
+        }
+        getUpcomingMovies { lista -> 
+            peliculasProximas = lista
+            loadingProgress += 25
+        }
+        
+        // Pequeño delay para mostrar la animación de carga
+        delay(500)
         loading = false
     }
 
@@ -58,7 +80,36 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
 
             when {
                 loading -> {
-                    CircularProgressIndicator()
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(64.dp),
+                            color = MaterialTheme.colorScheme.primary,
+                            strokeWidth = 6.dp
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            "Cargando contenido...",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LinearProgressIndicator(
+                            progress = loadingProgress / 100f,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            "$loadingProgress%",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
                 error != null -> {
                     Text("Error: $error", color = MaterialTheme.colorScheme.error)
@@ -102,6 +153,7 @@ fun CarruselMovie(movies: List<Movie>, navController: NavHostController){
         }
     }
 }
+
 @Composable
 fun CarruselSerie(series: List<Serie>, navController: NavHostController){
     LazyRow (
@@ -109,7 +161,7 @@ fun CarruselSerie(series: List<Serie>, navController: NavHostController){
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(series){
-                movie -> SerieItem(navController, movie)
+            movie -> SerieItem(navController, movie)
         }
     }
 }
