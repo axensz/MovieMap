@@ -33,10 +33,15 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
-        loading = true
-        getRecentMovies { lista -> peliculas = lista }
-        getRecentSeries { lista -> series = lista }
-        loading = false
+        if(peliculas.isEmpty() && series.isEmpty()){
+            loading = true
+            try {
+                getRecentMovies { lista -> peliculas = lista }
+                getRecentSeries { lista -> series = lista }
+            } finally {
+                loading = false
+            }
+        }
     }
 
     Column {

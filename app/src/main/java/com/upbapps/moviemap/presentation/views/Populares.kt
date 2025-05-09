@@ -20,6 +20,8 @@ import com.upbapps.moviemap.presentation.components.MovieItem
 import com.upbapps.moviemap.presentation.components.SerieItem
 import com.upbapps.moviemap.presentation.methods.getPopularMovies
 import com.upbapps.moviemap.presentation.methods.getPopularSeries
+import com.upbapps.moviemap.presentation.methods.getRecentMovies
+import com.upbapps.moviemap.presentation.methods.getRecentSeries
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.models.Serie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
@@ -33,10 +35,15 @@ fun Populares(navController: NavHostController, viewModel: MovieViewModel) {
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
-        loading = true
-        getPopularMovies { lista -> peliculas = lista }
-        getPopularSeries { lista -> series = lista }
-        loading = false
+        if(peliculas.isEmpty() && series.isEmpty()){
+            loading = true
+            try {
+                getPopularMovies { lista -> peliculas = lista }
+                getPopularSeries { lista -> series = lista }
+            } finally {
+                loading = false
+            }
+        }
     }
 
     Column {

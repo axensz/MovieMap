@@ -36,12 +36,20 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
     var error by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
-        loading = true
-        getTrendingTodayMovies { lista -> peliculasTendencia = lista }
-        getTopRatedMovies { lista -> peliculasTop = lista }
-        getTopRatedSeries { lista -> seriesTop = lista }
-        getUpcomingMovies { lista -> peliculasProximas = lista }
-        loading = false
+        if (peliculasTop.isEmpty() && seriesTop.isEmpty() &&
+            peliculasTendencia.isEmpty() && peliculasProximas.isEmpty()) {
+
+            loading = true
+            try{
+                getTrendingTodayMovies { lista -> peliculasTendencia = lista }
+                getTopRatedMovies { lista -> peliculasTop = lista }
+                getTopRatedSeries { lista -> seriesTop = lista }
+                getUpcomingMovies { lista -> peliculasProximas = lista }
+            }finally {
+                loading = false
+            }
+        }
+
     }
 
     Column {
@@ -53,9 +61,7 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Inicio", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(16.dp))
-
             when {
                 loading -> {
                     CircularProgressIndicator()
@@ -78,11 +84,11 @@ fun Home(navController: NavHostController, movieViewModel: MovieViewModel) {
                         CarruselSerie(seriesTop, navController)
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Películas mejor calificadas", style = MaterialTheme.typography.headlineSmall)
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         CarruselMovie(peliculasTop, navController)
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Estrenos próximos", style = MaterialTheme.typography.headlineSmall)
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         CarruselMovie(peliculasProximas, navController)
                     }
                 }
