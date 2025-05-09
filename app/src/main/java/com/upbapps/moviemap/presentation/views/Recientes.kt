@@ -21,11 +21,10 @@ import com.upbapps.moviemap.presentation.components.MovieItem
 import com.upbapps.moviemap.presentation.components.SerieItem
 import com.upbapps.moviemap.presentation.methods.getRecentMovies
 import com.upbapps.moviemap.presentation.methods.getRecentSeries
+import com.upbapps.moviemap.presentation.methods.getFilteredMovies
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.models.Serie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.text.input.TextFieldValue
 
 @Composable
 fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
@@ -42,12 +41,12 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
     var filtroYear by remember { mutableStateOf("") }
     var filtroRating by remember { mutableStateOf("") }
     var filtroGenre by remember { mutableStateOf("") }
+    var expandedGenre by remember { mutableStateOf(false) }
 
     val generos = mapOf(
         28 to "Acción", 35 to "Comedia", 18 to "Drama", 27 to "Terror",
         10749 to "Romance", 16 to "Animación", 878 to "Ciencia Ficción"
     )
-    var expandedGenre by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (peliculas.isEmpty() && series.isEmpty()) {
@@ -67,19 +66,30 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
         }
     }
 
-    fun aplicarFiltros() {
+    fun aplicarFiltrosPeliculas() {
+        loading = true
+        getFilteredMovies(filtroYear, filtroRating, filtroGenre) { lista ->
+            peliculasFiltradas = lista
+            loading = false
+        }
+    }
+
+    fun aplicarFiltrosSeries() {
+        loading = true
+        seriesFiltradas = series.filter { serie ->
+            (filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)) &&
+                    (filtroRating.isEmpty() || (serie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
+                    (filtroGenre.isEmpty() || serie.list_genres.any { it.toString() == filtroGenre })
+        }
+        loading = false
+    }
+
+    fun aplicarFiltrosGeneral() {
+        loading = true
         if (mostrarPeliculas) {
-            peliculasFiltradas = peliculas.filter { movie ->
-                (filtroYear.isEmpty() || movie.releaseDate.startsWith(filtroYear)) &&
-                        (filtroRating.isEmpty() || (movie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
-                        (filtroGenre.isEmpty() || movie.list_genres.contains(filtroGenre.toIntOrNull()))
-            }
+            aplicarFiltrosPeliculas()
         } else {
-            seriesFiltradas = series.filter { serie ->
-                (filtroYear.isEmpty() || serie.first_air_date.startsWith(filtroYear)) &&
-                        (filtroRating.isEmpty() || (serie.voteAverage ?: 0.0) >= (filtroRating.toFloatOrNull()?.times(2) ?: 0f)) &&
-                        (filtroGenre.isEmpty() || serie.list_genres.contains(filtroGenre.toIntOrNull()))
-            }
+            aplicarFiltrosSeries()
         }
     }
 
@@ -208,7 +218,7 @@ fun Recientes(navController: NavHostController, viewModel: MovieViewModel) {
             confirmButton = {
                 TextButton(
                     onClick = {
-                        aplicarFiltros()
+                        aplicarFiltrosGeneral()
                         showFilterDialog = false
                     }
                 ) {

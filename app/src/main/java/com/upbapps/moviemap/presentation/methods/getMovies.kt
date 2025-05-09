@@ -10,22 +10,77 @@ import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.IOException
 
-fun getMovies(onResult: (List<Movie>) -> Unit){
+fun getMovies(onResult: (List<Movie>) -> Unit) {
     val client = OkHttpClient()
+    val urlBuilder = "https://api.themoviedb.org/3/discover/movie".toHttpUrlOrNull()?.newBuilder()
+        ?.addQueryParameter("language", "es-ES")
+        ?.addQueryParameter("include_adult", "false")
+        ?.addQueryParameter("include_video", "false")
+        ?.addQueryParameter("page", "1") // Asegúrate de tener la paginación controlada desde el ViewModel/UI si es necesario
+        ?.addQueryParameter("sort_by", "popularity.desc")
 
     val request = Request.Builder()
-        .url("https://api.themoviedb.org/3/discover/movie?language=es-ES&include_adult=false&include_video=false&page=1&sort_by=popularity.desc")
-        .addHeader("Authorization", "Bearer "+ tk)
+        .url(urlBuilder?.build().toString())
+        .addHeader("Authorization", "Bearer $tk")
         .build()
 
     client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException){
+        override fun onFailure(call: Call, e: IOException) {
             Log.e("Error", e.message ?: "")
         }
-        override fun onResponse(call: Call, response: Response){
-            response.body?.string().let {json ->
+
+        override fun onResponse(call: Call, response: Response) {
+            response.body?.string().let { json ->
+                val gson = Gson()
+                val movieResponse = gson.fromJson(json, MovieResponse::class.java)
+                onResult(movieResponse.results ?: emptyList())
+            }
+        }
+    })
+}
+
+fun getFilteredMovies(
+    year: String = "",
+    rating: String = "",
+    genre: String = "",
+    onResult: (List<Movie>) -> Unit
+) {
+    val client = OkHttpClient()
+    val urlBuilder = "https://api.themoviedb.org/3/discover/movie".toHttpUrlOrNull()?.newBuilder()
+        ?.addQueryParameter("language", "es-ES")
+        ?.addQueryParameter("include_adult", "false")
+        ?.addQueryParameter("include_video", "false")
+        ?.addQueryParameter("page", "1") // Asegúrate de tener la paginación controlada desde el ViewModel/UI si es necesario
+        ?.addQueryParameter("sort_by", "popularity.desc")
+
+    if (year.isNotEmpty()) {
+        urlBuilder?.addQueryParameter("primary_release_year", year)
+    }
+    if (rating.isNotEmpty()) {
+        val vote = rating.toFloatOrNull()
+        if (vote != null) {
+            urlBuilder?.addQueryParameter("vote_average.gte", (vote * 2).toString())
+        }
+    }
+    if (genre.isNotEmpty()) {
+        urlBuilder?.addQueryParameter("with_genres", genre)
+    }
+
+    val request = Request.Builder()
+        .url(urlBuilder?.build().toString())
+        .addHeader("Authorization", "Bearer $tk")
+        .build()
+
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            Log.e("Filter Error", e.message ?: "")
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            response.body?.string()?.let { json ->
                 val gson = Gson()
                 val movieResponse = gson.fromJson(json, MovieResponse::class.java)
                 onResult(movieResponse.results ?: emptyList())
