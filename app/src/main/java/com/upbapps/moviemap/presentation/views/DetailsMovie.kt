@@ -1,5 +1,6 @@
 package com.upbapps.moviemap.presentation.views
 
+import com.upbapps.moviemap.presentation.components.Header
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -9,19 +10,19 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.upbapps.moviemap.presentation.models.Movie
 import com.upbapps.moviemap.presentation.viewmodels.MovieViewModel
-import androidx.compose.ui.graphics.Color
-import com.upbapps.moviemap.presentation.components.Header
-import androidx.compose.material.icons.filled.Star
+import java.util.Locale
 
 private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -31,11 +32,11 @@ fun DetailsMovie(
     movie: Movie,
     movieViewModel: MovieViewModel
 ) {
-    val genres_names = movie.listGenress.mapNotNull { genresMap[it] }
+    val genresNames = movie.listGenress.mapNotNull { genresMap[it] }
 
     Column {
         Header(navController)
-        Box(){
+        Box {
             AsyncImage(
                 model = IMAGE_BASE_URL + movie.backdropPath,
                 contentDescription = movie.title,
@@ -53,7 +54,7 @@ fun DetailsMovie(
                     .align(Alignment.TopStart)
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Volver",
                     tint = Color.White
                 )
@@ -73,8 +74,8 @@ fun DetailsMovie(
                 Text(movie.title, style = MaterialTheme.typography.titleMedium)
 
                 LazyRow {
-                    items(genres_names) { genre ->
-                        genreView(genre)
+                    items(genresNames) { genre ->
+                        GenreView(genre)
                         Spacer(modifier = Modifier.width(4.dp))
                     }
                 }
@@ -91,7 +92,7 @@ fun DetailsMovie(
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                Row(modifier = Modifier.padding(8.dp)){
+                Row(modifier = Modifier.padding(8.dp)) {
                     Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = "Rating",
@@ -100,7 +101,7 @@ fun DetailsMovie(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = String.format("%.1f", movie.voteAverage)
+                        text = String.format(Locale.getDefault(), "%.1f", movie.voteAverage)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -111,11 +112,8 @@ fun DetailsMovie(
 
                 // ✅ Botón para agregar a Listas
                 Button(
-                    onClick = {
-                        movieViewModel.addToList(movie)
-                        println("Película agregada a la lista: ${movie.title}")
-                    },
-                    modifier = Modifier.padding(top = 20.dp)
+                    onClick = { movieViewModel.addMovieToFavorites(movie) },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Agregar a Listas")
                 }
@@ -125,7 +123,7 @@ fun DetailsMovie(
 }
 
 @Composable
-fun genreView(genre: String) {
+fun GenreView(genre: String) {
     Surface(
         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
         shape = RoundedCornerShape(16.dp),

@@ -94,7 +94,7 @@ fun Navigation(movieViewModel: MovieViewModel) {
                 Populares(navController, movieViewModel)
             }
             composable(BottomNavItem.Listas.route) {
-                Listas(navController, movieViewModel)
+                Lists(navController, movieViewModel)
             }
 
             // Rutas de autenticación
